@@ -1,0 +1,205 @@
+<div class="min-h-screen bg-slate-50">
+
+  <div class="max-w-6xl mx-auto px-8 py-8">
+
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-6">
+
+      <button
+        (click)="goBack()"
+        class="text-blue-600 hover:text-blue-700 text-sm font-medium transition">
+        ← Back to Employees
+      </button>
+
+      <button
+        class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-xl font-semibold shadow-sm transition">
+        Update Employee
+      </button>
+
+    </div>
+
+    <!-- Title -->
+    <div class="mb-8">
+      <h1 class="text-4xl font-bold text-slate-900">
+        Employee Details
+      </h1>
+
+      <p class="text-slate-500 mt-1">
+        View complete employee information.
+      </p>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="!employee" class="bg-white rounded-3xl p-10 text-center shadow-sm border">
+      <p class="text-slate-500">Loading employee details...</p>
+    </div>
+
+    <!-- Employee Content -->
+    <div *ngIf="employee">
+
+      <!-- Profile Card -->
+      <div class="bg-white rounded-3xl border border-slate-200 p-8 shadow-sm mb-6">
+
+        <div class="flex items-center gap-6">
+
+          <!-- Avatar -->
+          <div
+            class="w-24 h-24 rounded-full bg-blue-600 text-white flex items-center justify-center text-4xl font-bold">
+
+            {{ getInitial(employee.name) }}
+
+          </div>
+
+          <!-- Employee Info -->
+          <div class="flex-1">
+
+            <h2 class="text-3xl font-bold text-slate-900">
+              {{ employee.name }}
+            </h2>
+
+            <p class="text-slate-500 mt-1">
+              {{ employee.designation }}
+            </p>
+
+            <div class="flex flex-wrap gap-3 mt-4">
+
+              <span class="px-4 py-1 rounded-full bg-slate-100 text-slate-700 text-sm font-semibold">
+                Sl. No. {{ slNo }}
+              </span>
+
+              <span class="px-4 py-1 rounded-full bg-blue-100 text-blue-700 text-sm font-semibold">
+                {{ employee.role }}
+              </span>
+
+              <span
+                class="px-4 py-1 rounded-full text-sm font-semibold"
+                [ngClass]="{
+                  'bg-green-100 text-green-700': employee.status === 'ACTIVE',
+                  'bg-yellow-100 text-yellow-700': employee.status === 'ON_LEAVE',
+                  'bg-red-100 text-red-700': employee.status === 'INACTIVE'
+                }">
+
+                {{ employee.status }}
+
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Information Cards -->
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        <!-- Personal Information -->
+        <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm">
+
+          <h3 class="text-lg font-semibold text-slate-900 mb-5">
+            Personal Information
+          </h3>
+
+          <div class="space-y-4">
+
+            <div>
+              <p class="text-sm text-slate-500">Email</p>
+              <p class="font-semibold break-all">{{ employee.emailId }}</p>
+            </div>
+
+            <div>
+              <p class="text-sm text-slate-500">Phone Number</p>
+              <p class="font-semibold">{{ employee.phoneNumber }}</p>
+            </div>
+
+            <div>
+              <p class="text-sm text-slate-500">Address</p>
+              <p class="font-semibold">{{ employee.address }}</p>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- Employment Information -->
+        <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm">
+
+          <h3 class="text-lg font-semibold text-slate-900 mb-5">
+            Employment Information
+          </h3>
+
+          <div class="space-y-4">
+
+            <div>
+              <p class="text-sm text-slate-500">Department</p>
+              <p class="font-semibold">{{ employee.department }}</p>
+            </div>
+
+            <div>
+              <p class="text-sm text-slate-500">Designation</p>
+              <p class="font-semibold">{{ employee.designation }}</p>
+            </div>
+
+            <div>
+              <p class="text-sm text-slate-500">Salary</p>
+              <p class="font-semibold">
+                ₹{{ employee.salary | number:'1.0-0' }}
+              </p>
+            </div>
+
+            <div>
+              <p class="text-sm text-slate-500">Joining Date</p>
+              <p class="font-semibold">
+                {{ employee.joiningDate | date:'dd MMM yyyy' }}
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- System Information -->
+        <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm">
+
+          <h3 class="text-lg font-semibold text-slate-900 mb-5">
+            System Information
+          </h3>
+
+          <div class="space-y-4">
+
+            <div>
+              <p class="text-sm text-slate-500">Role</p>
+              <p class="font-semibold">{{ employee.role }}</p>
+            </div>
+
+            <div>
+              <p class="text-sm text-slate-500">Status</p>
+              <p class="font-semibold">{{ employee.status }}</p>
+            </div>
+
+            <div>
+              <p class="text-sm text-slate-500">Created At</p>
+              <p class="font-semibold">
+                {{ employee.createdAt | date:'dd MMM yyyy' }}
+              </p>
+            </div>
+
+            <div>
+              <p class="text-sm text-slate-500">Updated At</p>
+              <p class="font-semibold">
+                {{ employee.updatedAt | date:'dd MMM yyyy' }}
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

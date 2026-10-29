@@ -1,0 +1,254 @@
+
+
+<div class="min-h-screen bg-gray-50 px-4 py-8 sm:px-8">
+  <div class="mx-auto max-w-4xl rounded-2xl bg-white p-6 shadow-md sm:p-8">
+
+    <button
+          (click)="goBack()"
+          class="text-blue-600 text-sm hover:underline mb-2">
+          ← Back to Dashboard
+        </button>
+
+        
+    <!-- Header -->
+    <div class="mb-8 border-b border-gray-200 pb-5">
+      <h2 class="text-2xl font-bold text-gray-800">Add Employee</h2>
+      <p class="mt-2 text-sm text-gray-500">
+        Enter the employee details below.
+      </p>
+    </div>
+
+    <!-- Success Message -->
+    @if (successMessage) {
+    <div class="mb-5 rounded-lg bg-green-50 p-3 text-sm text-green-700">
+      {{ successMessage }}
+    </div>
+    }
+
+    <!-- Error Message -->
+    @if (errorMessage) {
+    <div class="mb-5 rounded-lg bg-red-50 p-3 text-sm text-red-700">
+      {{ errorMessage }}
+    </div>
+    }
+
+    <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
+
+      <div class="grid grid-cols-1 gap-5 md:grid-cols-2">
+
+        <!-- Full Name -->
+        <div>
+          <label for="name" class="mb-2 block text-sm font-medium text-gray-700">
+            Full Name *
+          </label>
+
+          <input id="name" type="text" formControlName="name" placeholder="Enter full name"
+            class="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100" />
+
+          @if (isInvalid('name')) {
+          <p class="mt-1 text-sm text-red-600">
+            Name must contain 3–50 letters and spaces.
+          </p>
+          }
+        </div>
+
+        <!-- Email -->
+        <div>
+          <label for="emailId" class="mb-2 block text-sm font-medium text-gray-700">
+            Email Address *
+          </label>
+
+          <input id="emailId" type="email" formControlName="emailId" placeholder="employee@example.com"
+            class="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100" />
+
+          @if (isInvalid('emailId')) {
+          <p class="mt-1 text-sm text-red-600">
+            Enter a valid email address.
+          </p>
+          }
+        </div>
+
+        <!-- Phone Number -->
+        <div>
+          <label for="phoneNumber" class="mb-2 block text-sm font-medium text-gray-700">
+            Phone Number *
+          </label>
+
+          <input id="phoneNumber" type="tel" formControlName="phoneNumber" placeholder="10-digit mobile number"
+            maxlength="10"
+            class="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100" />
+
+          @if (isInvalid('phoneNumber')) {
+          <p class="mt-1 text-sm text-red-600">
+            Enter a valid 10-digit Indian mobile number.
+          </p>
+          }
+        </div>
+
+        <!-- Department -->
+        <div>
+          <label for="department" class="mb-2 block text-sm font-medium text-gray-700">
+            Department *
+          </label>
+
+          <input id="department" type="text" formControlName="department" placeholder="e.g. Engineering"
+            class="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100" />
+
+          @if (isInvalid('department')) {
+          <p class="mt-1 text-sm text-red-600">
+            Department is required.
+          </p>
+          }
+        </div>
+
+        <!-- Designation -->
+        <div>
+          <label for="designation" class="mb-2 block text-sm font-medium text-gray-700">
+            Designation *
+          </label>
+
+          <input id="designation" type="text" formControlName="designation" placeholder="e.g. Software Developer"
+            class="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100" />
+
+          @if (isInvalid('designation')) {
+          <p class="mt-1 text-sm text-red-600">
+            Designation is required.
+          </p>
+          }
+        </div>
+
+        <!-- Joining Date -->
+        <div>
+          <label for="joiningDate" class="mb-2 block text-sm font-medium text-gray-700">
+            Joining Date *
+          </label>
+
+          <input id="joiningDate" type="date" formControlName="joiningDate"
+            class="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100" />
+
+          @if (isInvalid('joiningDate')) {
+          <p class="mt-1 text-sm text-red-600">
+            Joining date is required.
+          </p>
+          }
+        </div>
+
+        <!-- Salary -->
+        <div>
+          <label for="salary" class="mb-2 block text-sm font-medium text-gray-700">
+            Salary *
+          </label>
+
+          <input id="salary" type="number" formControlName="salary" placeholder="Enter salary" min="0.01" step="0.01"
+            class="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100" />
+
+          @if (isInvalid('salary')) {
+          <p class="mt-1 text-sm text-red-600">
+            Salary must be greater than zero.
+          </p>
+          }
+        </div>
+
+        <!-- Role -->
+        <div>
+          <label for="role" class="mb-2 block text-sm font-medium text-gray-700">
+            Role *
+          </label>
+
+          <select id="role" formControlName="role"
+            class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100">
+            <option value="">Select role</option>
+            <option value="EMPLOYEE">Employee</option>
+            <option value="ADMIN">Admin</option>
+          </select>
+
+          @if (isInvalid('role')) {
+          <p class="mt-1 text-sm text-red-600">
+            Please select a role.
+          </p>
+          }
+        </div>
+
+        <!-- Status -->
+        <div>
+          <label for="status" class="mb-2 block text-sm font-medium text-gray-700">
+            Status *
+          </label>
+
+          <select id="status" formControlName="status"
+            class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100">
+            <option value="">Select status</option>
+            <option value="ACTIVE">Active</option>
+            <option value="ON_LEAVE">On Leave</option>
+            <option value="INACTIVE">Inactive</option>
+          </select>
+
+          @if (isInvalid('status')) {
+          <p class="mt-1 text-sm text-red-600">
+            Please select a status.
+          </p>
+          }
+        </div>
+
+        <!-- Password -->
+        <div>
+          <label for="password" class="mb-2 block text-sm font-medium text-gray-700">
+            Password *
+          </label>
+
+          <input id="password" type="password" formControlName="password" placeholder="Enter password"
+            autocomplete="new-password"
+            class="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100" />
+
+          @if (isInvalid('password')) {
+          <p class="mt-1 text-sm text-red-600">
+            Password must contain at least 8 characters.
+          </p>
+          }
+        </div>
+
+        <!-- Address -->
+        <div class="md:col-span-2">
+          <label for="address" class="mb-2 block text-sm font-medium text-gray-700">
+            Address *
+          </label>
+
+          <textarea id="address" formControlName="address" rows="4" maxlength="255"
+            placeholder="Enter complete employee address"
+            class="w-full resize-y rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"></textarea>
+
+          <div class="mt-1 flex justify-between">
+            @if (isInvalid('address')) {
+            <p class="text-sm text-red-600">
+              Address is required (maximum 255 characters).
+            </p>
+            } @else {
+            <span></span>
+            }
+
+            <span class="text-xs text-gray-400">
+              {{ employeeForm.controls.address.value?.length || 0 }}/255
+            </span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Buttons -->
+      <div class="mt-8 flex flex-col-reverse gap-3 border-t border-gray-200 pt-6 sm:flex-row sm:justify-end">
+
+        <button type="button" (click)="resetForm()"
+          class="rounded-lg border border-gray-300 px-6 py-3 font-medium text-gray-700 transition hover:bg-gray-100">
+          Reset
+        </button>
+
+        <button type="submit" [disabled]="employeeForm.invalid || isSubmitting"
+          class="rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50">
+          {{ isSubmitting ? 'Adding Employee...' : 'Add Employee' }}
+        </button>
+
+      </div>
+
+    </form>
+  </div>
+</div>
