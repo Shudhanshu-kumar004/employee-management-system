@@ -1,0 +1,260 @@
+<div class="min-h-screen bg-slate-50 flex flex-col">
+
+  <!-- Header -->
+  <div class="bg-white border-b shadow-sm">
+    <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
+
+      <div>
+        <button
+          (click)="goBack()"
+          class="text-blue-600 text-sm hover:underline mb-2">
+          ← Back to Dashboard
+        </button>
+
+        <h1 class="text-3xl font-bold text-slate-900">
+          Manage Employees
+        </h1>
+
+        <p class="text-slate-500 mt-1">
+          View, search and manage employee records.
+        </p>
+      </div>
+
+      <button
+        (click)="addEmployee()"
+        class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-lg font-medium transition flex items-center gap-2">
+        <span class="text-lg">+</span>
+        Add Employee
+      </button>
+
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="flex-1 max-w-7xl mx-auto w-full px-6 py-8">
+
+    <!-- Search & Filter -->
+    <div class="bg-white rounded-2xl shadow-sm border p-5 mb-6">
+
+      <div class="flex flex-col md:flex-row gap-4">
+
+        <!-- Search -->
+        <div class="flex-1 relative">
+
+          <span class="absolute left-4 top-3.5 text-slate-400">🔍</span>
+
+          <input
+            type="text"
+            [(ngModel)]="searchText"
+            (input)="onSearchInput()"
+            placeholder="Search by Name or Email ID"
+            class="w-full pl-11 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"/>
+
+        </div>
+
+        <!-- Filter -->
+        <div class="w-full md:w-60">
+
+          <select
+            [(ngModel)]="selectedStatus"
+            (change)="loadEmployees()"
+            class="w-full py-3 px-4 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+
+            <option value="ALL">All Employees</option>
+            <option value="ACTIVE">Active</option>
+            <option value="ON_LEAVE">On Leave</option>
+            <option value="INACTIVE">Inactive</option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Employee Table -->
+    <div class="bg-white rounded-2xl shadow-sm border overflow-hidden">
+
+      <div class="px-6 py-4 border-b flex items-center justify-between">
+
+        <h2 class="text-lg font-semibold text-slate-800">
+          Employee List
+        </h2>
+
+        <span class="text-sm text-slate-500">
+          Total: {{ employees.length }}
+        </span>
+
+      </div>
+
+      <div class="overflow-x-auto">
+
+        <table class="w-full">
+
+          <thead class="bg-slate-50 border-b">
+
+            <tr class="text-left text-sm font-semibold text-slate-600">
+
+              <th class="px-6 py-4">S.No.</th>
+              <th class="px-6 py-4">Name</th>
+              <th class="px-6 py-4">Email ID</th>
+              <th class="px-6 py-4">Department</th>
+              <th class="px-6 py-4">Role</th>
+              <th class="px-6 py-4">Status</th>
+              <th class="px-6 py-4 text-center">Actions</th>
+
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            <tr
+              *ngFor="let employee of employees; let i=index"
+              class="border-b hover:bg-slate-50 transition">
+
+              <td class="px-6 py-4 font-medium text-slate-700">
+                {{ i + 1 }}
+              </td>
+
+              <td class="px-6 py-4 font-medium text-slate-800">
+                {{ employee.name }}
+              </td>
+
+              <td class="px-6 py-4 text-slate-600">
+                {{ employee.emailId }}
+              </td>
+
+              <td class="px-6 py-4 text-slate-600">
+                {{ employee.department }}
+              </td>
+
+              <td class="px-6 py-4 text-slate-600">
+                {{ employee.role }}
+              </td>
+
+              <td class="px-6 py-4">
+
+                <span
+                  class="px-3 py-1 rounded-full text-xs font-semibold"
+                  [ngClass]="{
+                    'bg-green-100 text-green-700': employee.status === 'ACTIVE',
+                    'bg-yellow-100 text-yellow-700': employee.status === 'ON_LEAVE',
+                    'bg-red-100 text-red-700': employee.status === 'INACTIVE'
+                  }">
+
+                  {{
+                    employee.status === 'ACTIVE'
+                      ? 'Active'
+                      : employee.status === 'ON_LEAVE'
+                      ? 'On Leave'
+                      : 'Inactive'
+                  }}
+
+                </span>
+
+              </td>
+
+              <td class="px-6 py-4">
+
+                <div class="flex justify-center gap-3">
+
+                  <button 
+                  (click)="viewEmployee(employee.id, i)"
+                  class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                  View
+                </button>
+
+                  <button
+                    (click)="updateEmployee(employee.id)"
+                    class="text-amber-600 hover:text-amber-800 text-sm font-medium">
+                    Update
+                  </button>
+
+                  <button
+                    (click)="deleteEmployee(employee.id)"
+                    class="text-red-600 hover:text-red-800 text-sm font-medium">
+                    Delete
+                  </button>
+
+                </div>
+
+              </td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+      <!-- Empty State -->
+      <div
+        *ngIf="employees.length === 0"
+        class="py-14 text-center text-slate-500">
+
+        <div class="text-5xl mb-3">👤</div>
+
+        <p class="font-medium">No employees found.</p>
+
+        <p class="text-sm">Employee records will appear here.</p>
+
+      </div>
+
+      <!-- Pagination -->
+      <div class="border-t px-6 py-4 flex items-center justify-between">
+
+        <p class="text-sm text-slate-500">
+          Showing {{ employees.length }} of {{ totalElements }} employees
+        </p>
+
+        <div class="flex gap-2">
+
+          <button
+            class="px-4 py-2 border rounded-lg text-sm hover:bg-slate-100 disabled:opacity-50 disabled:cursor-not-allowed"
+            [disabled]="currentPage === 0"
+            (click)="goToPreviousPage()">
+            Previous
+          </button>
+
+          <button class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm">
+            {{ currentPage + 1 }}
+          </button>
+
+          <button
+            class="px-4 py-2 border rounded-lg text-sm hover:bg-slate-100 disabled:opacity-50 disabled:cursor-not-allowed"
+            [disabled]="currentPage >= totalPages - 1"
+            (click)="goToNextPage()">
+            Next
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-slate-950 text-slate-300 mt-10">
+
+    <div class="max-w-7xl mx-auto px-6 py-6 flex justify-between text-sm">
+
+      <p>© 2026 EMS. All rights reserved.</p>
+
+      <div class="flex gap-5">
+
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms</a>
+        <a href="#">Help</a>
+
+      </div>
+
+    </div>
+
+  </footer>
+
+</div>
